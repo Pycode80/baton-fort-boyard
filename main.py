@@ -2,6 +2,8 @@ from random import randint
 import tkinter as tk
 import pygame
 from tkinter import Spinbox
+import os
+import sys
 
 
 class JeuDesBatons(tk.Frame):
@@ -54,9 +56,9 @@ class JeuDesBatons(tk.Frame):
         self.btn_joueur1.config(state=tk.DISABLED)
         self.btn_joueur2.config(state=tk.DISABLED)
         if self.tour == 0:
-            self.lbl_resultat.config(text="Le joueur 2 a gagné.")
-        else:
             self.lbl_resultat.config(text="Le joueur 1 a gagné.")
+        else:
+            self.lbl_resultat.config(text="Le joueur 2 a gagné.")
 
     def jouer(self):
         self.var_batons = tk.StringVar()
@@ -83,8 +85,19 @@ fenetre = tk.Tk()
 jeu = JeuDesBatons(fenetre)
 jeu.jouer()
 pygame.init()
-musique = pygame.mixer.Sound('musique.wav')
+
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+musique = pygame.mixer.Sound(resource_path('musique.wav'))
 musique.play(-1)
 
 fenetre.mainloop()
-
